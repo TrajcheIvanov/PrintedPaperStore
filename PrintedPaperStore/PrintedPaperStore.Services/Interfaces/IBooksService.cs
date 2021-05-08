@@ -12,5 +12,6 @@ namespace PrintedPaperStore.Services.Interfaces
         void Update(Book book);
         void Delete(int id);
         Book GetById(int id);
+        List<Book> GetWithFilters(string title, string author);
     }
 }

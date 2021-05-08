@@ -28,6 +28,16 @@ namespace PrintedPaperStore
                 options.UseSqlServer(Configuration.GetConnectionString("PrintedPaperStoreDB"));
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyMethod()
+                           .AllowAnyOrigin()
+                           .AllowAnyHeader();
+                });
+            });
+
             services.AddControllers();
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<IBooksRepository, BooksRepository>();
@@ -40,6 +50,8 @@ namespace PrintedPaperStore
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 
