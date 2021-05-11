@@ -13,5 +13,7 @@ namespace PrintedPaperStore.Data
         }
 
         public DbSet<Book> Books { get; set; }
+        public DbSet<BookOrder> BookOrders { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }

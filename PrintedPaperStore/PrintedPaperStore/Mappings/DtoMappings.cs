@@ -36,5 +36,18 @@ namespace PrintedPaperStore.Mappings
                 Quantity = entity.Quantity
             };
         }
+
+        public static Order ToDomainModel(this CreateOrderDto entity)
+        {
+            return new Order
+            {
+                FullName = entity.FullName,
+                Address = entity.Address,
+                Phone = entity.Phone,
+                Email = entity.Email,
+                // this is filling the relaion table dynamically
+                Books = entity.BookIds.Select(x => new BookOrder() { BookId = x }).ToList()
+            };
+        }
     }
 }

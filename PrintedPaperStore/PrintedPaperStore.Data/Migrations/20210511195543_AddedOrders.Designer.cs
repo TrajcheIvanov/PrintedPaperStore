@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrintedPaperStore.Data;
 
 namespace PrintedPaperStore.Data.Migrations
 {
     [DbContext(typeof(PrintedPaperStoreDbContext))]
-    partial class PrintedPaperStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210511195543_AddedOrders")]
+    partial class AddedOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
