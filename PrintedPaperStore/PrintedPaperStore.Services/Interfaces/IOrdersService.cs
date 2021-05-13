@@ -11,6 +11,6 @@ namespace PrintedPaperStore.Services.Interfaces
         /// Creates new order
         /// </summary>
         /// <param name="order"></param>
-        void Create(Order order);
+        bool Create(Order order);
     }
 }

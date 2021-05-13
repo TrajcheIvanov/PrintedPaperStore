@@ -27,15 +27,33 @@ function createCartItem(book) {
     var cardBtn = document.createElement("button");
     cardBtn.classList.add("btn");
     cardBtn.classList.add("btn-primary");
+
     cardBtn.innerHTML = "Remove from cart"
     cardBtn.onclick = function(e) { removeFromCart(e, book.id) };
 
     card.appendChild(cardTitle);
     card.appendChild(cardPrice);
-    card.appendChild(cardBtn);
+
+    if (book.quantity < 1) {
+        var outOfSTock = document.createElement("p");
+        outOfSTock.classList.add("btn");
+        outOfSTock.classList.add("btn-danger");
+        outOfSTock.classList.add("disabled");
+        outOfSTock.innerText = "The book is out of stock";
+        card.appendChild(outOfSTock);
+
+
+    } else {
+        card.appendChild(cardBtn);
+    }
 
     var container = document.getElementById("cartItemContainer");
     container.appendChild(card);
+
+    if (book.quantity < 1) {
+        localStorageService.remove('cartItems', book.id);
+    }
+
 }
 
 function removeFromCart(event, bookId) {

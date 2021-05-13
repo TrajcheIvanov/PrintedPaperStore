@@ -30,15 +30,16 @@ function createCard(book) {
 
     var cardBtn = document.createElement("button");
     cardBtn.classList.add("btn");
-    cardBtn.classList.add("btn-primary");
 
     if (localStorageService.exists('cartItems', book.id)) {
         cardBtn.innerHTML = "Remove from cart";
+        cardBtn.classList.add("btn-warning");
         cardBtn.onclick = function(e) {
             removeFromCart(e, book.id);
         }
     } else {
         cardBtn.innerHTML = "Add to cart";
+        cardBtn.classList.add("btn-success");
         cardBtn.onclick = function(e) {
             addToCart(e, book.id);
         }
@@ -49,7 +50,17 @@ function createCard(book) {
     cardBody.appendChild(cardDescription);
     cardBody.appendChild(cardPrice);
     cardBody.appendChild(cardGenre);
-    cardBody.appendChild(cardBtn);
+
+    if (book.quantity < 1) {
+        var outOfSTock = document.createElement("p");
+        outOfSTock.classList.add("btn");
+        outOfSTock.classList.add("btn-danger");
+        outOfSTock.classList.add("disabled");
+        outOfSTock.innerText = "The book is out of stock";
+        cardBody.appendChild(outOfSTock);
+    } else {
+        cardBody.appendChild(cardBtn);
+    }
 
     card.appendChild(cardBody);
     col.appendChild(card);
@@ -63,6 +74,8 @@ function addToCart(event, bookId) {
     localStorageService.add("cartItems", bookId);
 
     event.target.innerHTML = "Remove from cart";
+    event.target.classList.remove("btn-success")
+    event.target.classList.add("btn-warning");
     event.target.onclick = function(e) {
         removeFromCart(e, bookId);
     }
@@ -72,6 +85,8 @@ function removeFromCart(event, bookId) {
     localStorageService.remove("cartItems", bookId);
 
     event.target.innerHTML = "Add to cart";
+    event.target.classList.remove("btn-warning")
+    event.target.classList.add("btn-success");
     event.target.onclick = function(e) {
         addToCart(e, bookId);
     }

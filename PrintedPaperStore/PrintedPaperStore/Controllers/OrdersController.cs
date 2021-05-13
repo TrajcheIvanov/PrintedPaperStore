@@ -38,8 +38,16 @@ namespace PrintedPaperStore.Controllers
 
             if (ModelState.IsValid)
             {
-                _ordersService.Create(createOrderDto.ToDomainModel());
-                return Ok();
+                var response = _ordersService.Create(createOrderDto.ToDomainModel());
+                if (!response)
+                {
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    return Ok();
+                }
+
             }
             else
             {
