@@ -21,6 +21,12 @@ namespace PrintedPaperStore.Controllers
             _ordersService = ordersService;
         }
 
+
+        /// <summary>
+        /// Creates new order from given data
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create(CreateOrderDto createOrderDto)
         {

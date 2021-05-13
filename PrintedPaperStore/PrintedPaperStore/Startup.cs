@@ -4,10 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using PrintedPaperStore.Data;
 using PrintedPaperStore.Data.Interfaces;
 using PrintedPaperStore.Services;
 using PrintedPaperStore.Services.Interfaces;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace PrintedPaperStore
 {
@@ -38,6 +42,27 @@ namespace PrintedPaperStore
                 });
             });
 
+            //essential swagger configuration
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    //additional swagger configuraiton
+                    Version = "v1",
+                    Title = "Printed Papaer Store API",
+                    Description = "Web API for working with printed papaer store",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Trajche Ivanov",
+                        Email = "trajcheivanov@hotmail.com",
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
             services.AddControllers();
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<IOrdersService, OrdersService>();
@@ -58,6 +83,17 @@ namespace PrintedPaperStore
             app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
+            //after this you need to make wwwroot folder
+            app.UseStaticFiles();
+            //essential swagger configuration
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                //this sets swagger as starting route
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
