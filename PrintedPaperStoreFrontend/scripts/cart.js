@@ -51,22 +51,23 @@ function orderBooks() {
     var address = document.getElementById("customerAddress").value;
     var phone = document.getElementById("customerPhone").value;
     //get booksids from local storage
+    validateForm();
 
     //validation 
-    var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if (name == "" || name.length < 2) {
-        alert("All fields are requird")
-        return
-    } else if (!email.match(pattern)) {
-        alert("All fields are requird")
-        return
-    } else if (address == "" || address.length < 4 || address.length > 100) {
-        alert("All fields are requird")
-        return
-    } else if (phone == "" || phone.length < 0 || phone.length > 100) {
-        alert("All fields are requird")
-        return
-    }
+    // var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    // if (name.trim() == "" || name.trim().length < 2) {
+    //     alert("All fields are required")
+    //     return
+    // } else if (!email.match(pattern)) {
+    //     alert("All fields are required")
+    //     return
+    // } else if (address == "" || address.length < 4 || address.length > 100) {
+    //     alert("All fields are required")
+    //     return
+    // } else if (phone == "" || phone.length < 0 || phone.length > 100) {
+    //     alert("All fields are required")
+    //     return
+    // }
 
 
 
@@ -89,7 +90,13 @@ function orderBooks() {
             location.href = "./index.html"
         })
         .catch(function(error) {
-            console.log(error)
+            if (error.response.status == 400) {
+                for (const property in error.response.data.errors) {
+                    console.log(`${property}: ${error.response.data.errors[property]}`);
+                }
+            } else {
+                alert("Something has occured. Please try again later.");
+            }
         })
 
     //make http post to send data to api
