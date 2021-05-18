@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PrintedPaperStore.DtoModels;
 using PrintedPaperStore.Mappings;
@@ -54,6 +55,7 @@ namespace PrintedPaperStore.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         public IActionResult Create(BookDto book)
         {
             if (ModelState.IsValid)
@@ -79,6 +81,7 @@ namespace PrintedPaperStore.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             _booksService.Delete(id);
@@ -93,6 +96,9 @@ namespace PrintedPaperStore.Controllers
         /// <response code="200">No data</response>
         /// <response code="400">If request data is invalid</response>       
         [HttpPut]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Update(BookDto book)
         {
             if (ModelState.IsValid)
